@@ -1,5 +1,5 @@
 
-topic and news models, tag and topics is same
+i assume there is two entity, topic and news models. In paper there is a tag, i assume tag and topics is same
 
 reference of domain driven approach :
 - https://youtu.be/VQym87o91f8?t=1403

@@ -1,9 +1,8 @@
 package rest
 
 import (
-	"fmt"
 	"net/http"
-	db "github.com/haikalvidya/goNews-RESTAPI/internal/database"
+	db "github.com/haikalvidya/goNews-RESTAPI/internal/go-news/repo"
 	"github.com/haikalvidya/goNews-RESTAPI/internal/go-news/service"
 	"strconv"
 	"github.com/labstack/echo/v4"
@@ -16,12 +15,12 @@ func CreateTopic(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed parsing request body")
 	}
 	// creating to database with call topic service
-	response, err := service.AddTopic(topicModel)
+	err := service.AddTopic(topicModel)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed to create topic")
 	}
 
-	return c.JSON(http.StatusCreated, response)
+	return c.JSON(http.StatusCreated, "News created successfully!")
 }
 
 func GetTopic(c echo.Context) error {
@@ -44,7 +43,7 @@ func GetAllTopic(c echo.Context) error {
 
 func RemoveTopic(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	response, err := service.RemoveTopic(id)
+	err := service.RemoveTopic(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed to remove topic by id")
 	}

@@ -1,9 +1,8 @@
 package rest
 
 import (
-	"fmt"
 	"net/http"
-	db "github.com/haikalvidya/goNews-RESTAPI/internal/database"
+	db "github.com/haikalvidya/goNews-RESTAPI/internal/go-news/repo"
 	"github.com/haikalvidya/goNews-RESTAPI/internal/go-news/service"
 	"strconv"
 	"github.com/labstack/echo/v4"
@@ -16,12 +15,12 @@ func CreateNews(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed parsing request body")
 	}
 	// creating to database with call news service
-	response, err := service.AddNews(newsModel)
+	err := service.AddNews(newsModel)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed to create news")
 	}
 
-	return c.JSON(http.StatusCreated, response)
+	return c.JSON(http.StatusCreated, "News created successfully!")
 }
 
 func GetNews(c echo.Context) error {
@@ -43,10 +42,8 @@ func GetAllNews(c echo.Context) error {
 }
 
 func GetAllNewsByStatus(c echo.Context) error {
-	status, err := c.Param("status")
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "Failed to get status")
-	}
+	status := c.Param("status")
+	
 	response, err := service.GetAllNewsByFilter(status)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed to get news by status") 
@@ -55,10 +52,8 @@ func GetAllNewsByStatus(c echo.Context) error {
 }
 
 func GetAllNewsByTopic(c echo.Context) error{
-	topic, err := c.Param("topic")
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "Failed to get topic") 
-	}
+	topic := c.Param("topic")
+	
 	response, err := service.GetAllNewsByTopic(topic)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed to get news by status") 
@@ -68,7 +63,7 @@ func GetAllNewsByTopic(c echo.Context) error{
 
 func RemoveNews(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	response, err := service.RemoveNews(id)
+	err := service.RemoveNews(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed to remove news by id")
 	}

@@ -5,11 +5,11 @@ import (
 	"github.com/haikalvidya/goNews-RESTAPI/pkg/models"
 )
 
-var topicService db.TopicService
+// var topicService db.TopicService
 var topic db.Topic
 
 func GetTopic(id int) (*models.Topic, error) {
-	topicService = &topic
+	topicService := &topic
 	// call repo function
 	theTopic, err := topicService.Get(id)
 	if err != nil {
@@ -20,7 +20,7 @@ func GetTopic(id int) (*models.Topic, error) {
 }
 
 func GetAllTopic() ([]*models.Topic, error) {
-	topicService = &topic
+	topicService := &topic
 	manyTopic, err := topicService.GetAll()
 	if err != nil {
 		return nil, err
@@ -28,17 +28,17 @@ func GetAllTopic() ([]*models.Topic, error) {
 	return manyTopic, nil
 }
 
-func AddTopic(theTopic *db.Topic) (int, error) {
-	topicService = theTopic
-	id, err := topicService.Save()
+func AddTopic(theTopic *db.Topic) error {
+	topicService := theTopic
+	err := topicService.Save()
 	if err != nil {
-		return id, err
+		return err
 	}
-	return id, nil
+	return nil
 }
 
 func RemoveTopic(id int) error {
-	topicService = &topic
+	topicService := &topic
 	err := topicService.Remove(id)
 	if err != nil {
 		return err
@@ -46,13 +46,10 @@ func RemoveTopic(id int) error {
 	return nil
 }
 
-func UpdateTopic(param *models.Topic, id int) error {
-	topicService = &topic
-	theTopic, err := topicService.Get(id)
-	if err != nil {
-		return err
-	}
-	err = theTopic.Update(param)
+func UpdateTopic(param *db.Topic, id int) error {
+	topicService := &topic
+	param.ID = uint(id)
+	err := topicService.Update(param)
 	if err != nil {
 		return err
 	}

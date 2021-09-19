@@ -9,11 +9,11 @@ import (
 type Topic models.Topic
 
 // import topic interface from models
-type TopicService models.TopicService
+// type TopicService models.TopicService
 
 
-func (c Topic) Get(id int) (*Topic, error) {
-	topic := &Topic{}
+func (t Topic) Get(id int) (*models.Topic, error) {
+	topic := &models.Topic{}
 	err := clientDb.DbClient.Preload("News").First(&topic, id).Error
 	if err != nil {
 		return nil, err
@@ -21,8 +21,8 @@ func (c Topic) Get(id int) (*Topic, error) {
 	return topic, nil
 }
 
-func (c Topic) GetAll() ([]Topic, error) {
-	topics := []Topic{}
+func (t Topic) GetAll() ([]*models.Topic, error) {
+	topics := []*models.Topic{}
 	err := clientDb.DbClient.Preload("News").Find(&topics).Error
 	if err != nil {
 		return nil, err
@@ -30,21 +30,21 @@ func (c Topic) GetAll() ([]Topic, error) {
 	return topics, nil
 }
 
-func (c *Topic) Save(topic *Topic) error {
-	err := clientDb.DbClient.Save(&topic).Error
+func (t *Topic) Save() error {
+	err := clientDb.DbClient.Save(&t).Error
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Topic) Remove(id int) error {
-	topic := &Topic{}
-	err := clientDb.DbClient.First(&topic, id).Error
+func (t *Topic) Remove(id int) error {
+	// topic := &Topic{}
+	err := clientDb.DbClient.First(&t, id).Error
 	if err != nil {
 		return err
 	}
-	err = clientDb.DbClient.Delete(&topic).Error
+	err = clientDb.DbClient.Delete(&t).Error
 	if err != nil {
 		return err
 	}
@@ -52,8 +52,8 @@ func (c *Topic) Remove(id int) error {
 	return nil
 }
 
-func (c *Topic) Update(topic *Topic) error {
-	err := clientDb.DbClient.Model(&topic).UpdateColumns(Topic{Name: topic.Name}).Error
+func (t *Topic) Update(topic *Topic) error {
+	err := clientDb.DbClient.Model(&t).UpdateColumns(Topic{Name: topic.Name}).Error
 	if err != nil {
 		return err
 	}

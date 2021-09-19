@@ -25,16 +25,19 @@ var (
 )
 
 // ConnectDB returns init gorm.DB
-func InitDb() {
+func init() {
 	config.Read()
 
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s TimeZone=Asia/Jakarta",
 		config.Host, config.Port, config.User, config.Dbname, config.Password)
 	DbClient, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{})
 	if err != nil {
+		fmt.Println("Error in connection to database")
 		log.Fatal(err)
 	}
+	
 	fmt.Println(DbClient)
+	fmt.Println("Successfully connected!")
 }
 
 // Read and parse the configuration file

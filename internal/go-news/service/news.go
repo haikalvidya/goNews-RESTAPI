@@ -5,11 +5,11 @@ import (
 	"github.com/haikalvidya/goNews-RESTAPI/pkg/models"
 )
 
-var ns db.NewsService
+// var ns db.NewsService
 var news db.News
 
 func GetNews(id int) (*models.News, error) {
-	ns = &news
+	ns := &news
 	// call repo function
 	theNews, err := ns.Get(id)
 	if err != nil {
@@ -20,7 +20,7 @@ func GetNews(id int) (*models.News, error) {
 }
 
 func GetAllNews() ([]*models.News, error) {
-	ns = &news
+	ns := &news
 	manyNews, err := ns.GetAll()
 	if err != nil {
 		return nil, err
@@ -28,8 +28,8 @@ func GetAllNews() ([]*models.News, error) {
 	return manyNews, nil
 }
 
-func AddNews(theNews *db.News) (*db.News, error) {
-	ns = theNews
+func AddNews(theNews *db.News) error {
+	ns := theNews
 	err := ns.Save()
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func AddNews(theNews *db.News) (*db.News, error) {
 }
 
 func RemoveNews(id int) error {
-	ns = &news
+	ns := &news
 	err := ns.Remove(id)
 	if err != nil {
 		return err
@@ -47,12 +47,9 @@ func RemoveNews(id int) error {
 }
 
 func UpdateNews(param *db.News, id int) error {
-	ns = &news
-	theNews, err := ns.Get(id)
-	if err != nil {
-		return err
-	}
-	err = theNews.Update(param)
+	ns := &news
+	param.ID = uint(id)
+	err := ns.Update(param)
 	if err != nil {
 		return err
 	}
@@ -60,7 +57,7 @@ func UpdateNews(param *db.News, id int) error {
 }
 
 func GetAllNewsByFilter(status string) ([]*models.News, error) {
-	ns = &news
+	ns := &news
 	manyNews, err := ns.GetAllByStatus(status)
 	if err != nil {
 		return nil, err
@@ -69,7 +66,7 @@ func GetAllNewsByFilter(status string) ([]*models.News, error) {
 }
 
 func GetAllNewsByTopic(theTopic string) ([]*models.News, error) {
-	ns = &news
+	ns := &news
 	manyNews, err := ns.GetByTopic(theTopic)
 	if err != nil {
 		return nil, err
