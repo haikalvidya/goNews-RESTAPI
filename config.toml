@@ -1,0 +1,7 @@
+# This is configuration to connect with db
+
+user="postgres"
+password="postgres"
+host="localhost"
+port="5432"
+dbname="postgres"
