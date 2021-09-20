@@ -1,6 +1,6 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 // news storage model
 type News struct {
@@ -10,7 +10,7 @@ type News struct {
 	Content     string     	`gorm:"not null;" json:"content"`
 	Status      string		`gorm:"default:draft;not null" json:"status"`
 	Slug		string		`gorm:"not null;" json:"slug"`
-	Topics      []Topic    	`gorm:"many2many:news_topics;" json:"topics"`
+	Topics      []*Topic    `gorm:"many2many:news_topics;" json:"topics"`
 }
 
 type NewsService interface {

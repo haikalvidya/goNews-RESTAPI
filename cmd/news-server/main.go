@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"github.com/haikalvidya/goNews-RESTAPI/internal/go-news/rest"
 	// "github.com/haikalvidya/goNews-RESTAPI/internal/redis"
-	// "github.com/haikalvidya/goNews-RESTAPI/internal/database"
+	"github.com/haikalvidya/goNews-RESTAPI/internal/database"
 	"log"
 	"github.com/labstack/echo/v4"
 )
@@ -19,6 +19,11 @@ func main() {
 	// init redis 
 	// redis.InitializeStorage()
 
+	// database migrate
+	_, err := database.DbMigrate()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.Printf("Server running at http://localhost:9090/")
 	router.Logger.Fatal(router.Start(":9090"))

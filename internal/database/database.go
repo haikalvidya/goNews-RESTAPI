@@ -4,33 +4,35 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/BurntSushi/toml"
+	// "github.com/BurntSushi/toml"
 	"gorm.io/gorm"
-	"gorm.io/driver/postgres"
+	// "gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 )
 
 // ConfigDB db setting
-type ConfigDB struct {
-	User		string
-	Password	string
-	Host		string
-	Port		string
-	Dbname		string
-}
+// type ConfigDB struct {
+// 	User		string
+// 	Password	string
+// 	Host		string
+// 	Port		string
+// 	Dbname		string
+// }
 
-var config = ConfigDB{}
+// var config = ConfigDB{}
 
-var (
-	DbClient *gorm.DB
-)
+// var (
+// 	DbClient *gorm.DB
+// )
 
-// ConnectDB returns init gorm.DB
-func init() {
-	config.Read()
+// ConnectDb returns init gorm.DB
+func ConnectDb() (*gorm.DB, error) {
+	// config.Read()
 
-	connectionString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s TimeZone=Asia/Jakarta",
-		config.Host, config.Port, config.User, config.Dbname, config.Password)
-	DbClient, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{})
+	// connectionString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s TimeZone=Asia/Jakarta",
+	// 	config.Host, config.Port, config.User, config.Dbname, config.Password)
+	// DbClient, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{})
+	DbClient, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 	if err != nil {
 		fmt.Println("Error in connection to database")
 		log.Fatal(err)
@@ -38,11 +40,13 @@ func init() {
 	
 	fmt.Println(DbClient)
 	fmt.Println("Successfully connected!")
+
+	return DbClient, nil
 }
 
 // Read and parse the configuration file
-func (c *ConfigDB) Read() {
-	if _, err := toml.DecodeFile("config.toml", &c); err != nil {
-		log.Fatal(err)
-	}
-}
+// func (c *ConfigDB) Read() {
+// 	if _, err := toml.DecodeFile("config.toml", &c); err != nil {
+// 		log.Fatal(err)
+// 	}
+// }

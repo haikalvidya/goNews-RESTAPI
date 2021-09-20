@@ -14,7 +14,14 @@ type Topic models.Topic
 
 func (t Topic) Get(id int) (*models.Topic, error) {
 	topic := &models.Topic{}
-	err := clientDb.DbClient.Preload("News").First(&topic, id).Error
+
+	conn, err := clientDb.ConnectDb()
+	if err != nil {
+		return nil, err
+	}
+	// defer conn.Close()
+
+	err = conn.Preload("News").First(&topic, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +30,14 @@ func (t Topic) Get(id int) (*models.Topic, error) {
 
 func (t Topic) GetAll() ([]*models.Topic, error) {
 	topics := []*models.Topic{}
-	err := clientDb.DbClient.Preload("News").Find(&topics).Error
+
+	conn, err := clientDb.ConnectDb()
+	if err != nil {
+		return nil, err
+	}
+	// defer conn.Close()
+
+	err = conn.Preload("News").Find(&topics).Error
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +45,13 @@ func (t Topic) GetAll() ([]*models.Topic, error) {
 }
 
 func (t *Topic) Save() error {
-	err := clientDb.DbClient.Save(&t).Error
+	conn, err := clientDb.ConnectDb()
+	if err != nil {
+		return err
+	}
+	// defer conn.Close()
+
+	err = conn.Create(&t).Error
 	if err != nil {
 		return err
 	}
@@ -39,12 +59,17 @@ func (t *Topic) Save() error {
 }
 
 func (t *Topic) Remove(id int) error {
-	// topic := &Topic{}
-	err := clientDb.DbClient.First(&t, id).Error
+	conn, err := clientDb.ConnectDb()
 	if err != nil {
 		return err
 	}
-	err = clientDb.DbClient.Delete(&t).Error
+	// defer conn.Close()
+
+	err = conn.First(&t, id).Error
+	if err != nil {
+		return err
+	}
+	err = conn.Delete(&t).Error
 	if err != nil {
 		return err
 	}
@@ -53,7 +78,13 @@ func (t *Topic) Remove(id int) error {
 }
 
 func (t *Topic) Update(topic *Topic) error {
-	err := clientDb.DbClient.Model(&t).UpdateColumns(Topic{Name: topic.Name}).Error
+	conn, err := clientDb.ConnectDb()
+	if err != nil {
+		return err
+	}
+	// defer conn.Close()
+
+	err = conn.Model(&t).UpdateColumns(Topic{Name: topic.Name}).Error
 	if err != nil {
 		return err
 	}

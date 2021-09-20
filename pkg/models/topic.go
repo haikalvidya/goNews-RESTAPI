@@ -1,11 +1,11 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 type Topic struct {
 	gorm.Model
 	Name		string     	`gorm:"not null;" json:"topic"`
-	News		[]News		`gorm:"many2many:news_topics;`
+	News		[]*News		`gorm:"many2many:news_topics;"`
 }
 
 type TopicService interface {
