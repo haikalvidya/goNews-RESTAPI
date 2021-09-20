@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"github.com/haikalvidya/goNews-RESTAPI/internal/go-news/rest"
-	// "github.com/haikalvidya/goNews-RESTAPI/internal/redis"
+	"github.com/haikalvidya/goNews-RESTAPI/internal/redis"
 	"github.com/haikalvidya/goNews-RESTAPI/internal/database"
 	"log"
 	"github.com/labstack/echo/v4"
@@ -17,7 +17,7 @@ func main() {
 	mapUrls()
 
 	// init redis 
-	// redis.InitializeStorage()
+	redis.InitializeStorage()
 
 	// database migrate
 	_, err := database.DbMigrate()
