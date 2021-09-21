@@ -1,7 +1,7 @@
 package repo
 
 import (
-	clientDb "github.com/haikalvidya/goNews-RESTAPI/internal/database"
+	"github.com/haikalvidya/goNews-RESTAPI/internal/database"
 	"github.com/haikalvidya/goNews-RESTAPI/pkg/models"
 )
 
@@ -9,19 +9,13 @@ import (
 type Topic models.Topic
 
 // import topic interface from models
-// type TopicService models.TopicService
+type TopicService models.TopicService
 
 
 func (t Topic) Get(id int) (*models.Topic, error) {
 	topic := &models.Topic{}
 
-	conn, err := clientDb.ConnectDb()
-	if err != nil {
-		return nil, err
-	}
-	// defer conn.Close()
-
-	err = conn.Preload("News").First(&topic, id).Error
+	err := database.DbClient.Preload("News").First(&topic, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -31,13 +25,7 @@ func (t Topic) Get(id int) (*models.Topic, error) {
 func (t Topic) GetAll() ([]*models.Topic, error) {
 	topics := []*models.Topic{}
 
-	conn, err := clientDb.ConnectDb()
-	if err != nil {
-		return nil, err
-	}
-	// defer conn.Close()
-
-	err = conn.Preload("News").Find(&topics).Error
+	err := database.DbClient.Preload("News").Find(&topics).Error
 	if err != nil {
 		return nil, err
 	}
@@ -45,13 +33,7 @@ func (t Topic) GetAll() ([]*models.Topic, error) {
 }
 
 func (t *Topic) Save() error {
-	conn, err := clientDb.ConnectDb()
-	if err != nil {
-		return err
-	}
-	// defer conn.Close()
-
-	err = conn.Create(&t).Error
+	err := database.DbClient.Create(&t).Error
 	if err != nil {
 		return err
 	}
@@ -59,17 +41,11 @@ func (t *Topic) Save() error {
 }
 
 func (t *Topic) Remove(id int) error {
-	conn, err := clientDb.ConnectDb()
+	err := database.DbClient.First(&t, id).Error
 	if err != nil {
 		return err
 	}
-	// defer conn.Close()
-
-	err = conn.First(&t, id).Error
-	if err != nil {
-		return err
-	}
-	err = conn.Delete(&t).Error
+	err = database.DbClient.Delete(&t).Error
 	if err != nil {
 		return err
 	}
@@ -77,14 +53,8 @@ func (t *Topic) Remove(id int) error {
 	return nil
 }
 
-func (t *Topic) Update(topic *Topic) error {
-	conn, err := clientDb.ConnectDb()
-	if err != nil {
-		return err
-	}
-	// defer conn.Close()
-
-	err = conn.Model(&t).UpdateColumns(Topic{Name: topic.Name}).Error
+func (t *Topic) Update(topic *models.Topic) error {
+	err := database.DbClient.Model(&t).UpdateColumns(Topic{Name: topic.Name}).Error
 	if err != nil {
 		return err
 	}

@@ -10,8 +10,8 @@ type Topic struct {
 
 type TopicService interface {
 	Get(id int) (*Topic, error)
-	GetAll() ([]Topic, error)
-	Save(*Topic) error
+	GetAll() ([]*Topic, error)
+	Save() error
 	Remove(id int) error
 	Update(*Topic) error
 }

@@ -8,14 +8,14 @@ import (
 
 // DBMigrate will create and migrate the tables, then make the some relationships
 func DbMigrate() (*gorm.DB, error) {
-	conn, err := ConnectDb()
-	if err != nil {
-		return nil, err
-	}
+	// conn, err := ConnectDb()
+	// if err != nil {
+	// 	return nil, err
+	// }
 	// defer conn.Close()
 
-	conn.AutoMigrate(&models.News{}, &models.Topic{})
+	DbClient.AutoMigrate(&models.News{}, &models.Topic{})
 	log.Println("Migration has been processed")
 
-	return conn, nil
+	return DbClient, nil
 }

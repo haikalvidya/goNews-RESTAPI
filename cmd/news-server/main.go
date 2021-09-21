@@ -19,6 +19,9 @@ func main() {
 	// init redis 
 	redis.InitializeStorage()
 
+	// database init
+	database.InitDb()
+
 	// database migrate
 	_, err := database.DbMigrate()
 	if err != nil {

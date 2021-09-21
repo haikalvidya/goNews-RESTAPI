@@ -17,7 +17,7 @@ type NewsService interface {
 	Get(id int) (*News, error)
 	GetAll() ([]*News, error)
 	GetAllByStatus(status string) ([]*News, error)
-	Save(*News) error
+	Save() error
 	Remove(id int) error
 	Update(*News) error
 }

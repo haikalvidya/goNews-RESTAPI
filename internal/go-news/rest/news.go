@@ -25,7 +25,7 @@ func CreateNews(c echo.Context) error {
 	}
 	
 	// flush all redis
-	err := redis.Flush()
+	err = redis.Flush()
 	if err != nil {
 		c.Logger().Error("unable to flush redis cache")
 	}
@@ -164,7 +164,7 @@ func RemoveNews(c echo.Context) error {
 func UpdateNews(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	newsModel := new(db.News)
+	newsModel := new(models.News)
 	// bind request body to the model objects
 	if err := c.Bind(newsModel); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed parsing request body")
@@ -177,7 +177,7 @@ func UpdateNews(c echo.Context) error {
 	}
 
 	// flush all redis
-	err := redis.Flush()
+	err = redis.Flush()
 	if err != nil {
 		c.Logger().Error("unable to flush redis cache")
 	}

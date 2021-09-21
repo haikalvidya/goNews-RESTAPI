@@ -21,18 +21,20 @@ import (
 
 // var config = ConfigDB{}
 
-// var (
-// 	DbClient *gorm.DB
-// )
+var (
+	DbClient *gorm.DB
+	err error
+)
 
 // ConnectDb returns init gorm.DB
-func ConnectDb() (*gorm.DB, error) {
+// func ConnectDb() (*gorm.DB, error) {
+func InitDb() {
 	// config.Read()
 
 	// connectionString := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s TimeZone=Asia/Jakarta",
 	// 	config.Host, config.Port, config.User, config.Dbname, config.Password)
 	// DbClient, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{})
-	DbClient, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
+	DbClient, err = gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 	if err != nil {
 		fmt.Println("Error in connection to database")
 		log.Fatal(err)
@@ -41,7 +43,7 @@ func ConnectDb() (*gorm.DB, error) {
 	fmt.Println(DbClient)
 	fmt.Println("Successfully connected!")
 
-	return DbClient, nil
+	// return DbClient, nil
 }
 
 // Read and parse the configuration file

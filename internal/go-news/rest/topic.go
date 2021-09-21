@@ -6,6 +6,8 @@ import (
 	"github.com/haikalvidya/goNews-RESTAPI/internal/go-news/service"
 	"github.com/haikalvidya/goNews-RESTAPI/pkg/models"
 	"strconv"
+	"fmt"
+	"encoding/json"
 	"github.com/labstack/echo/v4"
 	"github.com/haikalvidya/goNews-RESTAPI/internal/redis"
 )
@@ -23,7 +25,7 @@ func CreateTopic(c echo.Context) error {
 	}
 
 	// flush all redis
-	err := redis.Flush()
+	err = redis.Flush()
 	if err != nil {
 		c.Logger().Error("unable to flush redis cache")
 	}
@@ -106,7 +108,7 @@ func RemoveTopic(c echo.Context) error {
 func UpdateTopic(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	topicModel := new(db.Topic)
+	topicModel := new(models.Topic)
 	// bind request body to the model objects
 	if err := c.Bind(topicModel); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "Failed parsing request body")
@@ -118,7 +120,7 @@ func UpdateTopic(c echo.Context) error {
 	}
 
 	// flush all redis
-	err := redis.Flush()
+	err = redis.Flush()
 	if err != nil {
 		c.Logger().Error("unable to flush redis cache")
 	}
